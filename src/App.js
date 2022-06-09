@@ -53,11 +53,11 @@ function App() {
 
         <div className="form">
         <label>Movie Name:</label>
-        <input type="text" name="movieName" onChange={(e) => {
+        <input value={movieName} type="text" name="movieName" onChange={(e) => {
             setMovieName(e.target.value);
         }}/>
         <label>Review</label>
-        <input type="text" name="review" onChange={(e) => {
+        <input value={review} type="text" name="review" onChange={(e) => {
             setReview(e.target.value);
         }}/>
 
@@ -69,7 +69,11 @@ function App() {
                     <p>{val.movieReview}</p>
 
                     <button onClick={() => {deleteReview(index, val.movieName)}}>Delete</button>
-                    <input type="text" id="updateInput" onChange={(e) => {
+                    <input
+                    type="text"
+                    id="updateInput"
+                    value={newReview} 
+                    onChange={(e) => {
                         setNewReview(e.target.value)}}/>
                     <button onClick={() => {
                         updateReview(val.movieName)}}>Update</button>
