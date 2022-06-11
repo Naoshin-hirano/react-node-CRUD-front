@@ -3,15 +3,17 @@ import Axios from "axios";
 
 /**
  * 投稿一覧リスト
+ * memo: propsが変化しない限りこのcomponentは再レンダリングしない
  * @returns 投稿一覧リストのcomponent
  */
-export const Post = ({
+export const Post = React.memo(({
     index,
     movieName,
     movieReview,
     movieReviewList,
     setMovieList
 }) => {
+    console.log("postのレンダリング");
     const [newReview, setNewReview] = useState('');
 
     // レビューコメントの更新
@@ -52,4 +54,4 @@ export const Post = ({
             <button onClick={() => {updateReview(movieName)}}>Update</button>
         </>
     )
-};
+});

@@ -5,7 +5,7 @@ import Axios from "axios";
 import { Post } from "./components/posts";
 
 function App() {
-  console.log("レンダリング");
+  console.log("App.jsのレンダリング");
   const [movieName, setMovieName] = useState('');
   const [review, setReview] = useState('');
   const [movieReviewList, setMovieList] = useState([]);
