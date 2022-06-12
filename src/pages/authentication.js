@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import '../App.css';
 import Axios from "axios";
 
@@ -10,6 +10,8 @@ export const Authentication = () => {
   const [password, setPassword] = useState('');
 
   const [validation, setValidation] = useState('');
+  // axios使ってAPI通信をするとき、 リクエストに Cookie を添えて送信するために withCredentials オプションを有効にする
+  Axios.defaults.withCredentials = true;
 
   const register = () => {
       Axios.post("http://localhost:3001/api/register", {
@@ -32,6 +34,15 @@ export const Authentication = () => {
         }
     });
   }
+
+  // リロードの度にcookieにsessionIdが保持されているかを確認して、保持されていればログイン中のままになる
+  useEffect(() => {
+      Axios.get("http://localhost:3001/api/login").then((response) => {
+          if(response.data.loggedIn === true){
+            setValidation(response.data.user[0].username);
+          }
+      });
+  }, []);
 
   return (
     <div className="App">
