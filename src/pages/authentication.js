@@ -8,8 +8,8 @@ export const Authentication = () => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
-  const [validation, setValidation] = useState('');
+  // Userが認証されているか
+  const [validation, setValidation] = useState(false);
   // axios使ってAPI通信をするとき、 リクエストに Cookie を添えて送信するために withCredentials オプションを有効にする
   Axios.defaults.withCredentials = true;
 
@@ -27,13 +27,27 @@ export const Authentication = () => {
         username: username,
         password: password
     }).then((response) => {
-        if(response.data.message){
-            setValidation(response.data.message);
+        if(!response.data.auth){
+            setValidation(false);
         } else {
-            setValidation(response.data[0].username);
+            // 発行したtokenをブラウザのlocalStrageのtokenキーに保存する
+            localStorage.setItem("token", response.data.token);
+            setValidation(true);
         }
     });
   }
+
+  // Userが認証されているかの確認
+  const userAuthenticated = () => {
+      // headers[x-accress-token]のブラウザのlocalStorageにあるtokenを取得してリクエスト
+      Axios.get("http://localhost:3001/api/isUserAuth", {
+          headers: {
+              "x-access-token": localStorage.getItem("token"),
+          },
+      }).then((response) => {
+          console.log(response);
+      });
+  };
 
   // リロードの度にcookieにsessionIdが保持されているかを確認して、保持されていればログイン中のままになる
   useEffect(() => {
@@ -60,7 +74,9 @@ export const Authentication = () => {
             <input type="text" value={password} placeholder="Password..." onChange={(e) => {setPassword(e.target.value)}}/>
             <button onClick={login}>Login</button>
         </div>
-        <h1>{validation}</h1>
+        {validation && (
+            <button onClick={userAuthenticated}>Check if Authenticated</button>
+        )}
     </div>
   );
 }
