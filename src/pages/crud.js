@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import '../App.css';
 import Axios from "axios";
+import { Redirect } from "react-router-dom";
+import { AuthContext } from "../helper/AuthContext";
 
 import { Post } from "../components/posts";
 
@@ -10,7 +12,7 @@ export const Crud = () => {
   const [review, setReview] = useState('');
   const [movieReviewList, setMovieList] = useState([]);
 
-
+  const { authState } = useContext(AuthContext);
   useEffect(() => {
       Axios.get("http://localhost:3001/api/get").then((response) => {
         setMovieList(response.data);
@@ -31,6 +33,10 @@ export const Crud = () => {
       setMovieName('');
       setReview('');
   };
+
+  if(!authState){
+      <Redirect to="/login" />
+  }
 
   return (
     <div className="App">
