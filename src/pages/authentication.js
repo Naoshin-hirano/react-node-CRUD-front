@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import '../App.css';
 import Axios from "axios";
 
+// JWTでなくcookieでの認証していたときの処理方法明記のため当componentは残してある
 export const Authentication = () => {
   const [usernameReg, setUsernameReg] = useState('');
   const [passwordReg, setPasswordReg] = useState('');
